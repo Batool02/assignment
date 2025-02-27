@@ -1,0 +1,80 @@
+void main() {
+  
+  Library  booksLibrary = Library();
+
+ booksLibrary.addBook(title:"Harry potter", year:2006,author:"J. K. Rowling",genre:"Fantasy");
+  
+booksLibrary.addBook(title:"1984",year:1949 , author:"George Orwell",genre:" Political fiction");
+ booksLibrary.getBookInf(title:"The Great Gatsby"); 
+ booksLibrary.getBookInf(title: "Harry potter"); 
+ booksLibrary.listAllBooks(); 
+print(booksLibrary.listBooksByGenre(genre: "Fantasy"));
+print(booksLibrary.removeBook(title: "1984"));
+print(booksLibrary.removeBook(title: "Little Women"));
+
+}
+
+
+
+class Library{
+  
+  final Map< String,Map<String,dynamic>> books={};
+  
+  
+  void addBook(
+               {
+                 required String title ,
+                int year=0,
+                String? author,
+               String? genre,}
+              )
+  {
+    books[title]={'year': year,
+                  'author': author,
+                  'genre':genre};
+    
+    
+    print("BOOK ADDED SUCCESSFULLY");
+  }
+ 
+  
+void getBookInf({required String title}) {
+  print(books.containsKey(title) ? "THE TITLE : $title,\n THE AUTHOR : ${books[title]!['author']},\n YEAR : ${books[title]!['year']},\n GENRE: ${books[title]!['genre']}\n" 
+      : "BOOK NOT FOUND\n");}
+  
+
+  
+  
+  
+void listAllBooks({String? genre}) {
+  
+  var booksFilteredByGenre = books.entries
+    .where((entry) => genre== null||entry.value['genre']== genre)
+    .toList();
+
+  booksFilteredByGenre.isEmpty ? print("THE LIBRARY IS EMPTY")
+      : print("THESE ARE THE BOOKS IN THE LIBRARY :\n" + booksFilteredByGenre
+              .map((entry) =>"TITLE :${entry.key}\n  AUTHOR: ${entry.value['author']}\n  YEAR: ${entry.value['year']}\n  GENRE: ${entry.value['genre']}\n") .join("\n"));
+}
+
+    
+    List<String>listBooksByGenre({required String genre}){
+      
+      List<String>booksByGenre = books.keys
+      .where((title) => books[title]!['genre']==genre)
+      .toList(); 
+      
+      return booksByGenre.isNotEmpty ? booksByGenre   :  ["NO BOOKS FOUND FOR THIS GENRES"];  
+     
+  }
+  
+  
+  String removeBook({required String title}) {
+  if (books.containsKey(title)) {
+    books.remove(title);
+    return "\n BOOK REMOVED SUCCESSFULLY";
+  } else {
+    return "\n BOOK NOT FOUND.";
+  }
+}
+}
